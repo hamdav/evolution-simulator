@@ -69,9 +69,9 @@ THE CREATURES: Class
 
 
 THE SELECTION: Class
-	Vi genererar 360 varelser.
+	Vi genererar 1000 varelser.
 	alla gör testet. 
-	240 blir bortsorterade.
-	De 120 som är kvar får 2 barn var med små tweaks och (mer sällan) stora tweaks.
+	500 blir bortsorterade.
+	De 500 som är kvar får 1 barn var med små tweaks och (mer sällan) stora tweaks.
 
 
