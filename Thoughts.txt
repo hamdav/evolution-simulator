@@ -1,18 +1,45 @@
 Evolution simulator
 
-Noder som skall försöka gå upp för en trappa, ju högre desto bättre. 
 
-THE TEST: Class 
-	Trappa uppåt åt höger. 
+THE TEST: method 
+	Plan
 	Begränsad tid.
 	Success mäts i hur långt åt höger man kommer.
 	Eventuellt öka tiden efter ett antal generationer. 
+	
+	
+	function fitness(Creature)
+		[massa roliga utdata] = single_simulation(Creature,tid)
+		return längd_sprungen_åt_höger
+	
+	functino single_simulation(Creature,tid)
+		t=0
+		while t < tid:
+			for muscles in creature.muscles
+				muscle.add_acceleration_to_nodes(t)
+			for node in creature.nodes
+				do physics on the nodes
+				node.add_acceleration(g)
+				if at ground 
+					vertical velocity is 0 if it was down and unchanged if it was up
+					horizontal velocity and acceleration something with friction. This may be hard... not a static problem
+					vertical acceleration can be left alone I think. 
+				node.update_position()?
+			t += dt
+		return average position of nodes, maybe some other stuff
+	
+	function big_simulation()
+		generate a bunch of creatures
+		while true
+			fittness
+			sort 
+			kill 
+			reproduce
+
+				
 
 THE CREATURES: Class
-	En varelse består av ett antal noder och ett antal lemmar. 
-	Varje nod har en coefficient of friction.
-	Alla noder är lika tunga?
-	Varje lem har en period med vilken den kontraherar och en längd.
+	En varelse består av ett antal noder och ett antal muskler.
 
 	Pseudo kåd
 	class
@@ -50,6 +77,8 @@ THE CREATURES: Class
 			position
 			hastighet
 			acceleration
+			friktionskoefficient
+			massa? lägga till senare, vi börjar med massa 1
 			ID?
 		methods:
 			Constructor (all args)
@@ -59,7 +88,7 @@ THE CREATURES: Class
 			Constructor()
 				ger random värden till alla 
 
-			ska vi ha en update position här? Förändra acceleration och annat utifrån och sen uppdatera position och v här?
+			ska vi ha en update_position här? Förändra acceleration och annat utifrån och sen uppdatera position och v här?
 			getters och setters för vilka saker?
 			position - getter
 
