@@ -1,0 +1,77 @@
+Evolution simulator
+
+Noder som skall försöka gå upp för en trappa, ju högre desto bättre. 
+
+THE TEST: Class 
+	Trappa uppåt åt höger. 
+	Begränsad tid.
+	Success mäts i hur långt åt höger man kommer.
+	Eventuellt öka tiden efter ett antal generationer. 
+
+THE CREATURES: Class
+	En varelse består av ett antal noder och ett antal lemmar. 
+	Varje nod har en coefficient of friction.
+	Alla noder är lika tunga?
+	Varje lem har en period med vilken den kontraherar och en längd.
+
+	Pseudo kåd
+	class
+		fields: 
+			fitness=0
+			ID
+			Architecture
+		methods:
+			Constructor() 
+				construct random
+			Constructor(creature)
+				construct baby
+	class muskel
+		fields: 
+			ID?
+			Node 1
+			Node 2
+			T // Total period
+			f // Fraction of period contracted
+			T_0 // Phase to begin in
+			k // spring constant
+		methods:
+			Constructor (all args)
+				Alternativ - konstruera muskel som muterad kopia? constructor(muskel)
+				eller båda? Nä inte båda
+
+			Constructor()
+				ger random värden till alla 
+
+			Add node accelerations(t)
+				tittar på node1 och node2s positioner (och massor? kanske lägga till massa i framtida uppdatering) och beräknar spännkraft och från den tillförd acceleration på noderna och uppdaterar deras accelerationer. 
+	
+	class node
+		fields:
+			position
+			hastighet
+			acceleration
+			ID?
+		methods:
+			Constructor (all args)
+				Alternativ - konstruera Node som muterad kopia? constructor(node)
+				eller båda? Nä inte båda
+
+			Constructor()
+				ger random värden till alla 
+
+			ska vi ha en update position här? Förändra acceleration och annat utifrån och sen uppdatera position och v här?
+			getters och setters för vilka saker?
+			position - getter
+
+
+
+
+
+
+THE SELECTION: Class
+	Vi genererar 360 varelser.
+	alla gör testet. 
+	240 blir bortsorterade.
+	De 120 som är kvar får 2 barn var med små tweaks och (mer sällan) stora tweaks.
+
+
