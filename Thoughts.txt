@@ -15,16 +15,23 @@ THE TEST: method
 	functino single_simulation(Creature,tid)
 		t=0
 		while t < tid:
-			for muscles in creature.muscles
-				muscle.add_acceleration_to_nodes(t)
+			creature.set forces 0()
+			creature.update internal forces()
 			for node in creature.nodes
 				do physics on the nodes
-				node.add_acceleration(g)
+				node.add_force(g*node.get_mass())
 				if at ground 
-					vertical velocity is 0 if it was down and unchanged if it was up
-					horizontal velocity and acceleration something with friction. This may be hard... not a static problem
-					vertical acceleration can be left alone I think. 
-				node.update_position()?
+					N = - take z component of node.get_force() 
+					node.add_force(N)
+					v = x component of node.get velocity()
+					friction = node.friktionskoeff*norm(N)* v/norm(v)
+					node.add_force(friction)
+					
+				node.update acceleration()
+				node.update velocity()
+				if at ground and y velocity < 0
+					node.set y velocity 0()
+				node.update_position()
 			t += dt
 		return average position of nodes, maybe some other stuff
 	
@@ -52,6 +59,10 @@ THE CREATURES: Class
 				construct random
 			Constructor(creature)
 				construct baby
+			Update_internal_forces(t)
+				for each muscle
+					muscle.add_force_to_nodes(t)
+				
 	class muskel
 		fields: 
 			ID?
@@ -61,6 +72,7 @@ THE CREATURES: Class
 			f // Fraction of period contracted
 			T_0 // Phase to begin in
 			k // spring constant
+			c // dampening constant
 		methods:
 			Constructor (all args)
 				Alternativ - konstruera muskel som muterad kopia? constructor(muskel)
@@ -69,14 +81,16 @@ THE CREATURES: Class
 			Constructor()
 				ger random värden till alla 
 
-			Add node accelerations(t)
-				tittar på node1 och node2s positioner (och massor? kanske lägga till massa i framtida uppdatering) och beräknar spännkraft och från den tillförd acceleration på noderna och uppdaterar deras accelerationer. 
+			add_force_to_nodes(t)
+				ger spännkraft vid tid t och lägger till till self.node1 och self.node2
+				
 	
 	class node
 		fields:
 			position
 			hastighet
 			acceleration
+			force
 			friktionskoefficient
 			massa? lägga till senare, vi börjar med massa 1
 			ID?
@@ -88,9 +102,18 @@ THE CREATURES: Class
 			Constructor()
 				ger random värden till alla 
 
-			ska vi ha en update_position här? Förändra acceleration och annat utifrån och sen uppdatera position och v här?
-			getters och setters för vilka saker?
 			position - getter
+			velocity - getter and (setter or just make y value 0)
+			acceleration - behöver ingen getter
+			force - getter
+			add_force(force_to_be_added)
+				force += force_to_be_added
+			set_force_0()
+				force = 0
+			Update acceleration()
+			Update velocity
+			update position
+			
 
 
 
