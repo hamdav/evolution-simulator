@@ -53,7 +53,7 @@ THE CREATURES: Class
 		fields: 
 			fitness=0
 			ID
-			Architecture
+			Architecture// - should probably be an adjacency matrix. perhaps with muscles instead of 1s? one can check if a graph is connected with bsf/dsf traversal of the graph
 		methods:
 			Constructor() 
 				construct random
