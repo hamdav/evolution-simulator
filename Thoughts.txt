@@ -73,6 +73,8 @@ THE CREATURES: Class
 			T_0 // Phase to begin in
 			k // spring constant
 			c // dampening constant
+			lengthContracted
+			lengthExtended
 		methods:
 			Constructor (all args)
 				Alternativ - konstruera muskel som muterad kopia? constructor(muskel)
