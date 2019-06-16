@@ -8,10 +8,10 @@ namespace Creature
     {
         public Node(Node n, int id)
         {
-            this.position = 0;
-            this.velocity = 0;
-            this.acceleration = 0;
-            this.force = 0;
+            this.position = new Vector(0,0);
+            this.velocity = new Vector(0,0);
+            this.acceleration =  new Vector(0,0);
+            this.force = new Vector(0,0);
             this.id = id;
 
             Random rand = new Random();
@@ -26,21 +26,27 @@ namespace Creature
         public Node(int id){
             Random rand = new Random();
             
-            this.position = 0;
-            this.velocity = 0;
-            this.acceleration = 0;
-            this.force = 0;
+            this.position = new Vector(0,0);
+            this.velocity = new Vector(0,0);
+            this.acceleration = new Vector(0,0);
+            this.force = new Vector(0,0);
             this.id = id;
             this.mu = rand.NextDouble();
-            this.mass = rand.NextDouble();
+            this.mass = 1;
+
+            //Remember to make mass nonzero when variable mass is implemented, maybe have a minimum mass?
+            //this.mass = rand.NextDouble();
         }
-        private double position { get; }
-        private double velocity { get; set; }
-        private double acceleration { get; }
-        private double force { get; set; }
+        private Vector position { get; }
+        private Vector velocity { get; set; }
+        private Vector acceleration { get; }
+        private Vector force { get; set; }
         private int id { get; }
         private double mu;
         private double mass;
+        public void addForce(Vector f){
+            force = force + f;
+        }
     }
 }
 
