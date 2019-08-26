@@ -1,0 +1,25 @@
+
+
+function main () {
+
+    creatures = generate_random_creatures(500);
+
+    for (generation = 0; generation < 100; generation ++)
+        scores = [];
+        for creature in creatures{
+            score = single_simulation(creature);
+            scores.append(score)
+        sort creatures based on scores
+        
+        kill worst creatures
+
+        new_generation = []
+        for creature in remaining creatures
+            new_generation.add(creature and creature.make_baby());
+        creatures = new_generation
+
+
+        
+        
+
+    
