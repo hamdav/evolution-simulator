@@ -33,6 +33,7 @@ THE TEST: method
 					node.set y velocity 0()
 				node.update_position()
 			t += dt
+			draw(creature)
 		return average position of nodes, maybe some other stuff
 	
 	function big_simulation()
@@ -94,6 +95,7 @@ THE CREATURES: Class
 			acceleration
 			force
 			friktionskoefficient
+			radie
 			massa? lägga till senare, vi börjar med massa 1
 			ID?
 		methods:
