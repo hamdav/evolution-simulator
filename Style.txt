@@ -1,0 +1,11 @@
+Variable names: words_with_underscores_in_lowercase
+Function names: wordsWithCamelCaseWithInitialLowercase
+Global static constants: ALL_UPPERCASE_WITH_UNDERSCORES
+Class names: InitalCapitalThenCamelCase
+
+Brackets go on new line
+if (condition)
+{
+  block
+}
+
