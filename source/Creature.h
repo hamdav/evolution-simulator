@@ -1,21 +1,19 @@
-#ifndef CREATURE
-#define CREATURE
+#pragma once
+
+#include "Muscle.h"
+#include "Node.h"
+#include <list>
+#include <set>
+
+using namespace std;
 
 class Creature
 {
-    private:
-        float number;
-        float score;
     public:
-        float getNumber();
-        void setScore(float s);
-        float getScore();
+        Creature(); // Random creature
+        void updateInternalForces(double t);
         Creature offspring();
-        Creature(float n);
-        Creature();
-};
+        list<Muscle> muscles;   //Should these be public?
+        set<Node> nodes;       // ?
+}
 
-#endif
-
-        
-        
