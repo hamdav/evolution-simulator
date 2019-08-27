@@ -3,7 +3,6 @@
 class Muscle
 {
     public:
-        Muscle(Node n1, Node n2);
         Muscle(Node n1, Node n2, double period = 1, double fraction_contracted = 0.5, double contracted_length = 1, double extended_length = 2, double phase_shift = 0, double k = 1, double c = 1);
         void addForceToNodes(double t);
         Muscle offspring();

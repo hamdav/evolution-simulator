@@ -1,19 +1,24 @@
 #pragma once
 
-#include "vector.h"
+#include "Vector.h"
 
 class Node
 {
     public:
         Node();
-        Node(Node n);
-        void addForce(Vector f);
+        Node(double, double);
+        Node child();
+        void addForce(Vector);
         Vector getPos();
+        void setPos(Vector); // Should be set initial pos?
         Vector getVel();
-        void setVel(Vector v);
+        void setVel(Vector);
         Vector getAcc();
         Vector getForce();
-        //void setForce(Vector f);
+        //void setForce(Vector);
+        void updateAcc();
+        void updateVel(double); // Takes dt as argument
+        void updatePos(double); // same
 
     private:
         Vector pos;

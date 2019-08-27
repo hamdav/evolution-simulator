@@ -1,4 +1,4 @@
-#include "vector.h"
+#include "Vector.h"
 
 Vector :: Vector (double _x, double _y) : x(_x), y(_y) {}
 
@@ -16,7 +16,7 @@ Vector Vector :: mul (double k)
 
 Vector Vector :: sub (Vector v)
 {
-    return(x - v.x; y - v.y);
+    return Vector(x - v.x, y - v.y);
 }   
 double Vector :: length()
 {
@@ -25,3 +25,4 @@ double Vector :: length()
 double Vector :: dot(Vector v)
 {
     return (x*v.x + y*v.y);
+}
