@@ -1,2 +1,6 @@
+# Precompiled headers
+*.gch
 # Ignore .exe files
 *.exe
+*.out
+*.app
