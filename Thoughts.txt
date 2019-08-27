@@ -8,10 +8,6 @@ THE TEST: method
 	Eventuellt öka tiden efter ett antal generationer. 
 	
 	
-	function fitness(Creature)
-		[massa roliga utdata] = single_simulation(Creature,tid)
-		return längd_sprungen_åt_höger
-	
 	functino single_simulation(Creature,tid)
 		t=0
 		while t < tid:
@@ -34,7 +30,7 @@ THE TEST: method
 				node.update_position()
 			t += dt
 			draw(creature)
-		return average position of nodes, maybe some other stuff
+		set the score of the creature to the length run. 
 	
 	function big_simulation()
 		generate a bunch of creatures
@@ -54,7 +50,7 @@ THE CREATURES: Class
 		fields: 
 			fitness=0
 			ID
-			Architecture// - should probably be an adjacency matrix. perhaps with muscles instead of 1s? one can check if a graph is connected with bsf/dsf traversal of the graph
+			Architecture// - should probably be a map. One can check if a graph is connected with bsf/dsf traversal of the graph
 		methods:
 			Constructor() 
 				construct random
