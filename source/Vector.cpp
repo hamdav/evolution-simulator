@@ -4,20 +4,24 @@ Vector :: Vector (double _x, double _y) : x(_x), y(_y) {}
 
 Vector :: Vector () {x=0;y=0;}
 
-void Vector :: add (Vector v)
+Vector Vector :: add (Vector v)
 {
-    x = x + v.x;
-    y = y + v.y;
+    return Vector(x + v.x, y + v.y);
 }
 
-void Vector :: mul (double k)
+Vector Vector :: mul (double k)
 {
-    x = k*x;
-    y = k*y;
+    return Vector(k*x, k*y);
 }
 
-void Vector :: sub (Vector v)
+Vector Vector :: sub (Vector v)
 {
-    x = x - v.x;
-    y = y - v.y;
+    return(x - v.x; y - v.y);
 }   
+double Vector :: length()
+{
+    return (x*x+y*y);
+}
+double Vector :: dot(Vector v)
+{
+    return (x*v.x + y*v.y);

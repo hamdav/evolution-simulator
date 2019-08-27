@@ -4,9 +4,11 @@ class Vector
 {
     public:
         double x,y;
-        void add(Vector v);
-        void mul(double k);
-        void sub(Vector v);
+        Vector add(Vector v);
+        Vector mul(double k);
+        Vector sub(Vector v);
+        double dot(Vector v);
+        double length();
         Vector(double _x, double _y);
         Vector();
 };
