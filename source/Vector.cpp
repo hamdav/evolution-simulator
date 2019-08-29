@@ -26,3 +26,7 @@ double Vector :: dot(Vector v)
 {
     return (x*v.x + y*v.y);
 }
+Vector Vector :: normed()
+{
+    return mul(1/length());
+}

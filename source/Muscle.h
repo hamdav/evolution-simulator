@@ -1,9 +1,14 @@
 #pragma once
 
+#include "Vector.h"
+#include "Node.h"
+
 class Muscle
 {
     public:
-        Muscle(Node n1, Node n2, double period = 1, double fraction_contracted = 0.5, double contracted_length = 1, double extended_length = 2, double phase_shift = 0, double k = 1, double c = 1);
+        //Muscle(Node &n1, Node &n2, double period = 1, double fraction_contracted = 0.5, double contracted_length = 1, double extended_length = 2, double phase_shift = 0, double k = 1, double c = 1);
+        Muscle(Node&, Node&);
+        Muscle(Node&, Node&, double, double, double, double, double, double, double);
         void addForceToNodes(double t);
         Muscle offspring();
 
@@ -11,8 +16,8 @@ class Muscle
         Vector forceOnNode1(bool is_contracted);
         bool isContracted(double t);
 
-        Node node1;
-        Node node2;
+        Node& node1;
+        Node& node2;
         //Total period of motion, not less than one second
         double period; 
         // fraction of the period that the muscle is contracted
@@ -29,6 +34,6 @@ class Muscle
         double k;
         // dampening constant TODO should be critically dampened?
         double c;
-}
+};
 
 

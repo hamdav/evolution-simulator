@@ -5,7 +5,6 @@
 #include <list>
 #include <set>
 
-using namespace std;
 
 class Creature
 {
@@ -13,7 +12,10 @@ class Creature
         Creature(); // Random creature
         void updateInternalForces(double t);
         Creature offspring();
-        list<Muscle> muscles;   //Should these be public?
-        set<Node> nodes;       // ?
+        std::list<Muscle> muscles;   //Should these be public?
+        std::set<Node> nodes;       // ?
+    private:
+        int MAX_NO_NODES = 7;
+        int MIN_NO_NODES = 3;
 }
 
