@@ -1,7 +1,10 @@
 #include "Creature.h"
 #include "Muscle.h"
+#include "myRand.h"
 #include <list>
-#include <set>
+#include <map>
+#include <vector>
+#include <algorithm> // for find
 
 using namespace std;
 
@@ -19,7 +22,7 @@ Creature :: Creature ()
     for (int i = 0; i < number_of_nodes; i++)
     {
         Node n = Node();
-        nodes.insert(n);
+        nodes.push_back(n);
         connections[i] = list<int>();
     }
 
@@ -27,22 +30,17 @@ Creature :: Creature ()
     int muscles_created = 0;
     
 
-    set<Node>::iterator it = nodes.begin();
-    int i = 0;
-
-    while ((it + i) != nodes.end() -1)
+    for (int i = 0; i < number_of_nodes -1; i++)
     {
         //Connect node i and node i+1 with each other
-        Muscle m = Muscle(*(it+i), *(it + i+1));
+        Muscle m = Muscle(nodes[i], nodes[i+1]);
         muscles.push_back(m);
 
         //Add the connection to the list. 
         connections[i].push_back(i+1);
         muscles_created++;
-        i++;
     }
 
-    it = nodes.begin();
     while (muscles_created < number_of_muscles)
     {
         int n1 = myRandInt(0,number_of_nodes);
@@ -52,12 +50,13 @@ Creature :: Creature ()
         if (n1 != n2 && is_not_already_connected)
         {
             muscles_created++;
-            Muscle m = Muscle(*(it+n1),*(it+n2));
+            Muscle m = Muscle(nodes[n1], nodes[n2]);
             muscles.push_back(m);
         }
     }
 }
 
+/*
 Creature :: Creature (list<Muscle> _muscles)
 {
     muscles = _muscles;
@@ -67,18 +66,22 @@ Creature :: Creature (list<Muscle> _muscles)
         nodes.insert(muscle.node2);
     }
 }
+*/
 
 void Creature :: updateInternalForces(double t)
 {
-    for (Muscle const &muscle : muscles)
+    for (Muscle& muscle : muscles)
     {
-        muscle.addForceToNodes(t)
+        muscle.addForceToNodes(t);
     }
 }
 Creature Creature :: offspring()
 {
     //TODO small chance of changing architechture
     //TODO Change some shit and return a new creature. 
+    return *this;
 }
+
+
     
 

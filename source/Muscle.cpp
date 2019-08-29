@@ -9,7 +9,7 @@
 Muscle :: Muscle(Node& n1, Node& n2) : node1(n1), node2(n2)
 {
     
-    period = myRand(1,5)
+    period = myRand(1,5);
     fraction_contracted = myRand(0,1);
     contracted_length = myRand(1,3);
     extended_length = myRand(1,3);

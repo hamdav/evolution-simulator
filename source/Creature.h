@@ -3,7 +3,7 @@
 #include "Muscle.h"
 #include "Node.h"
 #include <list>
-#include <set>
+#include <vector>
 
 
 class Creature
@@ -13,9 +13,9 @@ class Creature
         void updateInternalForces(double t);
         Creature offspring();
         std::list<Muscle> muscles;   //Should these be public?
-        std::set<Node> nodes;       // ?
+        std::vector<Node> nodes;       // ?
     private:
         int MAX_NO_NODES = 7;
         int MIN_NO_NODES = 3;
-}
+};
 

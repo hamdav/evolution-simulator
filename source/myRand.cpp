@@ -15,6 +15,6 @@ double myRand(double min, double max, int precision)
 int myRandInt(int min, int max)
 {
     int length_of_interval = max - min;
-    rv = (rand() % length_of_interval) + min;
+    int rv = (rand() % length_of_interval) + min;
     return rv;
 }
