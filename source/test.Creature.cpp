@@ -1,4 +1,3 @@
-#include "single.h"
 #include "Creature.h"
 #include <SFML/Graphics.hpp>
 #include <cmath> // for atan
@@ -7,15 +6,14 @@
 
 #define PI 3.14159265 
 
-double GRAVITATIONAL_ACCELERATION = 9.8;
-
-void singleSimulation(Creature &bob, bool graphical) 
+int main()
 {
     int seed = time(NULL);
     srand(seed);
     sf::RenderWindow window(sf::VideoMode(200,200),"Eve",sf::Style::Resize);
     window.setFramerateLimit(1000);
 
+    Creature bob = Creature();
 
     int i = 0;
     for (Node& node : bob.nodes)
@@ -41,21 +39,8 @@ void singleSimulation(Creature &bob, bool graphical)
         bob.updateInternalForces(time);
         for (Node& node : bob.nodes)
         {
-            //Gravity
-            node.addForce(Vector(0,-node.getMass()*GRAVITATIONAL_ACCELERATION));
-            if (nodeTouchesGround(node))
-                addFrictionToNode(node); 
-
             node.updateAcc();
             node.updateVel(dt);
-            if (nodeTouchesGround(node))
-            {
-                //If the node touches the ground, set velocity and acceleration to 0 if they are accelerating/velocitating down. Else leave them be. (the node should not travel into the ground).
-                node.setVel(Vector(node.getVel().x, max(node.getVel().y, 0)));
-                node.addForce(Vector(0,max(0,-1*node.getForce().y)));
-
-            }
-
             node.updatePos(dt);
             node.zeroForce();
         }
@@ -105,28 +90,5 @@ void singleSimulation(Creature &bob, bool graphical)
 
         window.display();
     }
+    return 0;
 }
-
-bool nodeTouchesGround(Node n)
-{
-    if (n.getPos().y <= 0.0)
-        return true;
-    return false;
-}
-void addFrictionToNode(Node& n)
-{
-    double normal_force = -n.getForce().y;
-    
-    // No normal force, no friction
-    if (normal_force < 0)
-        return;
-
-    double frictional_force_magnitude = normal_force * n.getMu();
-    
-    int direction = n.getVel().x > 0 ? -1 : 1;
-
-    //if (abs(n.getVel().x) < 0.5) // Dont do anything if v is to small
-    n.addForce(Vector(frictional_force_magnitude * direction,0));
-}
-
-    
