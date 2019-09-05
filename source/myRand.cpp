@@ -14,6 +14,8 @@ double myRand(double min, double max, int precision)
 }
 int myRandInt(int min, int max)
 {
+    if (min == max)
+        return min;
     int length_of_interval = max - min;
     int rv = (rand() % length_of_interval) + min;
     return rv;

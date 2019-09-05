@@ -1,4 +1,5 @@
 #include "Vector.h"
+#include <cmath>
 
 Vector :: Vector (double _x, double _y) : x(_x), y(_y) {}
 
@@ -20,7 +21,7 @@ Vector Vector :: sub (Vector v)
 }   
 double Vector :: length()
 {
-    return (x*x+y*y);
+    return sqrt(x*x+y*y);
 }
 double Vector :: dot(Vector v)
 {

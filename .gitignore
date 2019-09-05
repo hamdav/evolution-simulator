@@ -1,5 +1,7 @@
 # Precompiled headers
 *.gch
+# Compiled stuff
+*.o
 # Ignore .exe files
 *.exe
 *.out

@@ -10,7 +10,7 @@ class Muscle
         Muscle(Node&, Node&);
         Muscle(Node&, Node&, double, double, double, double, double, double, double);
         void addForceToNodes(double t);
-        Muscle offspring();
+        void mutateInPlace();
 
     private:
         Vector forceOnNode1(bool is_contracted);
@@ -34,6 +34,22 @@ class Muscle
         double k;
         // dampening constant TODO should be critically dampened?
         double c;
+
+        const double MIN_PERIOD = 1;
+        const double MAX_PERIOD = 4;
+        const double MIN_FRAC_CON = 0;
+        const double MAX_FRAC_CON = 1;
+        const double MIN_LEN_CON = 50;
+        const double MAX_LEN_CON = 100;
+        const double MIN_LEN_EXT = 100;
+        const double MAX_LEN_EXT = 400;
+        const double MIN_PHASE_SHIFT = 0;
+        const double MAX_PHASE_SHIFT = 1;
+        const double MIN_K = 1;
+        const double MAX_K = 30;
+        const double MIN_C = 1;
+        const double MAX_C = 30;
+
 };
 
 

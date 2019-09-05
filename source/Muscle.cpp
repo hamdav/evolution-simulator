@@ -4,21 +4,22 @@
 #include "Node.h"
 #include "mutate.h"
 #include "myRand.h"
+#include <iostream>
 
 
 Muscle :: Muscle(Node& n1, Node& n2) : node1(n1), node2(n2)
 {
     
-    period = myRand(1,5);
-    fraction_contracted = myRand(0,1);
-    contracted_length = myRand(1,3);
-    extended_length = myRand(1,3);
-    phase_shift = myRand(0,1);
-    k = 1;
-    c = 1;
+    period = myRand(MIN_PERIOD,MAX_PERIOD);
+    fraction_contracted = myRand(MIN_FRAC_CON,MAX_FRAC_CON);
+    contracted_length = myRand(MIN_LEN_CON,MAX_LEN_CON);
+    extended_length = myRand(MIN_LEN_EXT,MAX_LEN_EXT);
+    phase_shift = myRand(MIN_PHASE_SHIFT,MAX_PHASE_SHIFT);
+    k = myRand(MIN_K, MAX_K);
+    c = myRand(MIN_C, MAX_C);
     
 }
-Muscle :: Muscle(Node& n1, Node& n2, double _period = 1, double _fraction_contracted = 0.5, double _contracted_length = 1, double _extended_length = 2, double _phase_shift = 0, double _k = 1, double _c = 1) : node1(n1), node2(n2)
+Muscle :: Muscle(Node& n1, Node& n2, double _period = 1, double _fraction_contracted = 0.5, double _contracted_length = 1, double _extended_length = 2, double _phase_shift = 0, double _k = 1, double _c = 10) : node1(n1), node2(n2)
 {
     period = _period;
     fraction_contracted = _fraction_contracted;
@@ -56,6 +57,7 @@ Vector Muscle :: forceOnNode1(bool is_contracted)
     double dampenedForceMagnitude = -c * relativeVel.dot(normedRelPos);
     Vector dampenedForce = normedRelPos.mul(dampenedForceMagnitude);
 
+
     return springForce.add(dampenedForce);
 }
 
@@ -66,20 +68,21 @@ void Muscle :: addForceToNodes(double t)
     Vector force_on_1 = forceOnNode1(contracted);
 
     node1.addForce(force_on_1);
+
     // Newton's third law
     Vector force_on_2 = force_on_1.mul(-1);
     node2.addForce(force_on_2);
 }
-Muscle Muscle :: offspring()
+void Muscle :: mutateInPlace()
 {
-    double _period = mutate(1,10,period);
-    double _fraction_contracted = mutate(0,1,fraction_contracted);
-    double _contracted_length = mutate(1,10,contracted_length);
-    double _extended_length = mutate(1,10,extended_length);
-    double _phase_shift = mutate(0,1,phase_shift);
-    double _k = 1;
-    double _c = 1;
+    period = mutate(MIN_PERIOD,MAX_PERIOD,period);
+    fraction_contracted = mutate(MIN_FRAC_CON,MAX_FRAC_CON,fraction_contracted);
+    contracted_length = mutate(MIN_LEN_CON,MAX_LEN_CON,contracted_length);
+    extended_length = mutate(MIN_LEN_EXT,MAX_LEN_EXT,extended_length);
+    phase_shift = mutate(MIN_PHASE_SHIFT,MAX_PHASE_SHIFT,phase_shift);
+    k = 1;
+    c = 1;
     //_k = mutate(1,1,k);
     //_c = mutate(1,1,c);
-    return Muscle(node1, node2, period = _period , fraction_contracted = _fraction_contracted , contracted_length = _contracted_length , extended_length = _extended_length , phase_shift = _phase_shift , k = _k , c = _c );
+    //return Muscle(node1, node2, period = _period , fraction_contracted = _fraction_contracted , contracted_length = _contracted_length , extended_length = _extended_length , phase_shift = _phase_shift , k = _k , c = _c );
 }
