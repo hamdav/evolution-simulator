@@ -3,6 +3,6 @@
 
 #include "Creature.h"
 
-void singleSimulation (Creature&, bool);
+void singleSimulation (Creature&, bool, int);
 
 #endif

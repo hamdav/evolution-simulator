@@ -55,5 +55,7 @@ Vector Node :: getAcc() {return acc;}
 Vector Node :: getForce() {return force;}
 void Node :: setVel(Vector v) {vel = v;}
 double Node :: getRadius() {return radius;}
+double Node :: getMu() {return mu;}
+double Node :: getMass() {return mass;}
 
 

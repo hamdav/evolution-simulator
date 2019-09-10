@@ -15,7 +15,10 @@ Creature :: Creature ()
     //The number of muscles must be at least one more than the number of nodes. 
     //The number of muscles cannot be more than n*(n-1)/2 as there would then be more than one muscle per pair of nodes. 
     int number_of_nodes = myRandInt(MIN_NO_NODES,MAX_NO_NODES);
-    int number_of_muscles = myRandInt(number_of_nodes, number_of_nodes*(number_of_nodes-1)/2);
+    cout << number_of_nodes << endl;
+    
+    int number_of_muscles = myRandInt(number_of_nodes, number_of_nodes*(number_of_nodes-1)/2+1);
+    cout << number_of_muscles << endl;
 
     // Create nodes 
     // connections is a map of ints that keeps track of the other nodes that the node is connected to. 
@@ -58,6 +61,7 @@ Creature :: Creature ()
         }
     }
     // TMP Printing code to se that everything is alright
+    /*
     for (int i = 0; i < number_of_nodes; i++)
     {
         cout << i << ": " << endl;
@@ -65,6 +69,17 @@ Creature :: Creature ()
             cout << j << endl;
     }
     cout << "Number of muscles: " << muscles_created << "should be " << number_of_muscles << endl;
+    
+    */
+}
+void Creature :: setInitialPos()
+{
+    for (int i = 0;i < nodes.size(); i++)
+    {
+        // Initial position is (100,-50),(100, 50),(200,-50),(200,50),(300,-50) and so on
+        Vector init_pos = Vector(-50 + 100*(i%2), 100 + 50*(i - (i%2)));
+        nodes[i].setPos(init_pos);
+    }
 }
 
 /*
@@ -92,6 +107,19 @@ Creature Creature :: offspring()
     //TODO Change some shit and return a new creature. 
     return *this;
 }
+Vector Creature :: getAvgPos()
+{
+    Vector cum_pos = Vector(0,0);
+    for (Node n : nodes)
+    {
+        cum_pos = cum_pos.add(n.getPos());
+    }
+    Vector avg_pos = cum_pos.mul(1.0/nodes.size());
+    return avg_pos;
+}
+
+void Creature :: setScore(double s) { score = s; }
+double Creature :: getScore () {return score;}
 
 
     

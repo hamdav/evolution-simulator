@@ -22,6 +22,8 @@ class Node
         void updateVel(double); // Takes dt as argument
         void updatePos(double); // same
         double getRadius();
+        double getMu();
+        double getMass();
 
     private:
         Vector pos;
@@ -35,7 +37,7 @@ class Node
 
         const double MIN_MASS = 1; 
         const double MAX_MASS = 1; 
-        const double MIN_MU = 1;
+        const double MIN_MU = 0;
         const double MAX_MU = 1;
         const double MIN_RADIUS = 3;
         const double MAX_RADIUS = 3;
