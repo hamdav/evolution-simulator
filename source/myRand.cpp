@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 
+// Non-inclusive, precision 3 gives three significant figures
 double myRand(double min, double max, int precision) 
 {
     double length_of_interval = max - min;
@@ -20,3 +21,12 @@ int myRandInt(int min, int max)
     int rv = (rand() % length_of_interval) + min;
     return rv;
 }
+bool randomBool(double probabillity_of_true)
+{
+    if (probabillity_of_true > 1 || probabillity_of_true < 0)
+        throw std::invalid_argument("Bad probabillity");
+
+    int d = myRand(0,1,3);
+    return probabillity_of_true >= d;
+}
+
