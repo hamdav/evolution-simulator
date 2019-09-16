@@ -36,7 +36,7 @@ Creature :: Creature ()
      
     for (int i = 0; i < number_of_nodes -1; i++)
     {
-        //Connect node i and node i+1 with each other
+        //Connect node i with random other node
         Muscle m = Muscle(nodes[i], nodes[i+1]);
         muscles.push_back(m);
 
@@ -77,8 +77,8 @@ void Creature :: setInitialPos()
 {
     for (int i = 0;i < nodes.size(); i++)
     {
-        // Initial position is (100,-50),(100, 50),(200,-50),(200,50),(300,-50) and so on
-        Vector init_pos = Vector(-50 + 100*(i%2), 100 + 50*(i - (i%2)));
+        // Initial position is (1,-0.5),(1, 0.5),(1.5,-0.5),(1.5,0.5),(2,-0.5) and so on
+        Vector init_pos = Vector(-0.5 + (i%2), 1 + 0.25*(i - (i%2)));
         nodes[i].setPos(init_pos);
     }
 }

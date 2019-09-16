@@ -22,7 +22,7 @@ class Creature
         void setInitialPos();
         void printCreature();
     private:
-        int MAX_NO_NODES = 5;
+        int MAX_NO_NODES = 8;
         int MIN_NO_NODES = 4;
         double score;
 };

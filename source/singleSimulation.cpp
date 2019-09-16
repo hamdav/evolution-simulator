@@ -10,11 +10,19 @@
 
 #define PI 3.14159265 
 
-const double GRAVITATIONAL_ACCELERATION = 100;
+const double GRAVITATIONAL_ACCELERATION = 5;
+const int MAGNIFICATION_FACTOR = 100;
 const double TIME_LIMIT = 20;
 
+// There is a difference between physical coordinates (the ones used to calculate the physics with) and drawing coordinates (the ones drawn to the screen). 
+// Physical is on the order of magnitue of 1 while drawing on 100
+// Drawing also has the y axis flipped and moved down 600 pixels
+// further, drawing is shifted center.x*100 units to the right to make the creature appear inside the screen at all times
+// This function takes a positional vector v and center in physical coordinates and returns a vector in drawing coordinates
 Vector toDrawCoord(Vector v, Vector center)
 {
+    v = v.mul(MAGNIFICATION_FACTOR);
+    center = center.mul(MAGNIFICATION_FACTOR);
     return Vector(v.x + 500 - center.x, 600-v.y);
 }
 
@@ -140,7 +148,7 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
             window.draw(ground);
 
             //Draw poles
-            double center_four_hundred = bob.getAvgPos().x - std::fmod(bob.getAvgPos().x,400.0);
+            double center_mod_4 = bob.getAvgPos().x - std::fmod(bob.getAvgPos().x,4.0);
             for (int i = -3; i < 3; i++)
             {
                 //Draw clouds
@@ -151,6 +159,7 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                 sf::CircleShape eye1(5);
                 sf::CircleShape eye2(5);
                 sf::RectangleShape cloudbase(sf::Vector2f(50,20));
+
                 circle1.setOrigin(20,20);
                 circle2.setOrigin(20,20);
                 circle3.setOrigin(20,20);
@@ -158,8 +167,10 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                 eye1.setOrigin(5,5);
                 eye2.setOrigin(5,5);
                 cloudbase.setOrigin(25,0);
-                int upshift = (((int)center_four_hundred + i*400)%800)/10;
-                Vector cloud_pos = toDrawCoord(Vector(center_four_hundred + i*400, 500 + upshift),bob.getAvgPos());
+
+                int upshift = (((int)center_mod_4 + i*4)%8)/10;
+                Vector cloud_pos = toDrawCoord(Vector(center_mod_4 + i*4, 5 + upshift),bob.getAvgPos());
+
                 circle1.setPosition(cloud_pos.x,cloud_pos.y);//400,220);
                 circle2.setPosition(cloud_pos.x + 25, cloud_pos.y - 20); //425,200);
                 circle3.setPosition(cloud_pos.x + 50, cloud_pos.y); //450,220);
@@ -175,6 +186,7 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                 mouth.setFillColor(sf::Color(0,0,0));
                 eye1.setFillColor(sf::Color(0,0,0));
                 eye2.setFillColor(sf::Color(0,0,0));
+
                 window.draw(cloudbase);
                 window.draw(circle1);
                 window.draw(circle3);
@@ -186,26 +198,26 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                 // Draw poles
                 sf::RectangleShape pole(sf::Vector2f(20,100));
                 pole.setOrigin(10,0);
-                Vector pole_pos = toDrawCoord(Vector(center_four_hundred + i*400, 100),bob.getAvgPos());
+                Vector pole_pos = toDrawCoord(Vector(center_mod_4 + i*4, 1),bob.getAvgPos());
                 pole.setPosition(pole_pos.x, pole_pos.y);
                 pole.setFillColor(sf::Color(255,255,255));
                 window.draw(pole);
 
                 sf::RectangleShape sign(sf::Vector2f(80,50));
                 sign.setOrigin(40,0);
-                Vector sign_pos = toDrawCoord(Vector(center_four_hundred + i*400, 100),bob.getAvgPos());
+                Vector sign_pos = toDrawCoord(Vector(center_mod_4 + i*4, 1),bob.getAvgPos());
                 sign.setPosition(sign_pos.x, sign_pos.y);
                 sign.setFillColor(sf::Color(255,255,255));
                 window.draw(sign);
 
                 sf::Text text;
-                text.setString( toString(center_four_hundred + i*400));
+                text.setString( toString(center_mod_4 + i*4) + " m");
                 text.setFont(font);
                 //In pixels, not points
                 text.setCharacterSize(25);
                 text.setFillColor(sf::Color(255,0,0));
                 text.setStyle(sf::Text::Bold );
-                Vector text_pos = toDrawCoord(Vector(center_four_hundred + i*400 - 20, 100-5),bob.getAvgPos());
+                Vector text_pos = toDrawCoord(Vector(center_mod_4 + i*4 - 0.2, 0.95),bob.getAvgPos());
                 text.setPosition(text_pos.x, text_pos.y);
                 window.draw(text);
             }
@@ -229,7 +241,9 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                     Vector p1 = bob.nodes[n1].getPos();
                     Vector p2 = bob.nodes[n2].getPos();
                     Vector diff = p2.sub(p1); // from p1 to p2
-                    double muscle_length = diff.length();
+                    Vector p12 = p1.add(diff.mul(0.5)); // Point in between p1 and p2
+
+                    double muscle_length = diff.length()*MAGNIFICATION_FACTOR;
                     double muscle_width = 12;
                     double angle = atan(-diff.y/diff.x) * 180 / PI ;
                     //Create the rectangle
@@ -237,7 +251,6 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                     // Set the origin of the rectangle to the center
                     muscle.setOrigin(muscle_length/2, muscle_width/2);
                     // Move the center of the rectangle in the middle of the two nodes
-                    Vector p12 = p1.add(diff.mul(0.5));
                     Vector drawp12 = toDrawCoord(p12,bob.getAvgPos());
                     muscle.setPosition(drawp12.x, drawp12.y);
                     //Rotate the rectangle to fit
@@ -246,18 +259,18 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
                     muscle.setFillColor(sf::Color(200, 100, 0));
                     // Draw it to the screen
                     window.draw(muscle);
-
                 }
             }
             // Draw nodes
             for (int i = 0; i < bob.nodes.size(); i++)
             {
-                sf::CircleShape circle(bob.nodes[i].getRadius());
-                circle.setOrigin(bob.nodes[i].getRadius(),bob.nodes[i].getRadius());
+                int radius = (int)(bob.nodes[i].getRadius() * MAGNIFICATION_FACTOR);
+                sf::CircleShape circle(radius);
+                circle.setOrigin(radius,radius);
                 Vector drawp = toDrawCoord(bob.nodes[i].getPos(), bob.getAvgPos());
                 circle.setPosition(drawp.x, drawp.y);
                 double mu_for_color = bob.nodes[i].getMu();
-                circle.setFillColor(sf::Color(255/(1+mu_for_color*10), 255/(1+mu_for_color*20), 255/(1+mu_for_color*30)));
+                circle.setFillColor(sf::Color(255/(1+mu_for_color*10), 255/(1+mu_for_color*40), 255/(1+mu_for_color*40)));
                 window.draw(circle);
             }
 

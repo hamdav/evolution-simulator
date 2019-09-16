@@ -42,16 +42,16 @@ class Muscle
         double MAX_PERIOD = 4;
         double MIN_FRAC_CON = 0;
         double MAX_FRAC_CON = 1;
-        double MIN_LEN_CON = 50;
-        double MAX_LEN_CON = 100;
-        double MIN_LEN_EXT = 100;
-        double MAX_LEN_EXT = 400;
+        double MIN_LEN_CON = 1;
+        double MAX_LEN_CON = 2;
+        double MIN_LEN_EXT = 1;
+        double MAX_LEN_EXT = 2;
         double MIN_PHASE_SHIFT = 0;
         double MAX_PHASE_SHIFT = 1;
-        double MIN_K = 1;
-        double MAX_K = 30;
-        double MIN_C = 1;
-        double MAX_C = 30;
+        double MIN_K = 0;
+        double MAX_K = 50;
+        double MIN_C = 0;
+        double MAX_C = 5;
 
 };
 

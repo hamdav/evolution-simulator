@@ -5,7 +5,7 @@
 #include "single.h"
 
 using namespace std;
-const int POPULATION_SIZE = 500;
+const int POPULATION_SIZE = 100;
 const int NUMBER_OF_GENERATIONS = 100;
 
 // To sort with creature with larger score first
@@ -16,8 +16,14 @@ bool creatureComparator(Creature c1, Creature c2)
 
 void printPop(std::list<Creature> pop)
 {
+    int i = 0;
     for (Creature c : pop)
-        std::cout << c.getScore() << std::endl;
+    {
+        i++;
+        printf("| id: %3d kind: %d%-2d score: % 6.2f | ", i, c.nodes.size(),  c.muscles.size(), c.getScore());
+        if (i% 4 == 0)
+            std::cout << std::endl;
+    }
 }
 
 
@@ -45,7 +51,7 @@ void bigSimulation ()
         // Sort the population with the highest score first. 
         population.sort(creatureComparator);
         cout << "Sorted " << endl;
-        //printPop(population);
+        printPop(population);
 
         // Only kill if this is the last generation
         if (generation != NUMBER_OF_GENERATIONS)

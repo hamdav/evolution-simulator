@@ -37,15 +37,15 @@ class Node
         Vector force;
         double mass;
         double mu;
-        double radius = 20;
+        double radius = 0.2;
         int id;
 
         double MIN_MASS = 1; 
         double MAX_MASS = 1; 
         double MIN_MU = 0;
         double MAX_MU = 1;
-        double MIN_RADIUS = 3;
-        double MAX_RADIUS = 3;
+        double MIN_RADIUS = 0.2;
+        double MAX_RADIUS = 0.2;
 
 };
 
