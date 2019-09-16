@@ -2,6 +2,7 @@
 #include "Vector.h"
 #include "mutate.h"
 #include "myRand.h"
+#include <iostream>
 
 Node :: Node ()
 {
@@ -46,6 +47,10 @@ void Node :: updatePos(double dt)
 }
 */
 
+void Node :: printNode() 
+{
+    std::cout << "Node: " << id << " Mass: " << mass << " Mu: " << mu << std::endl;
+}
 
 void Node :: zeroForce() {force = Vector(0,0);}
 Vector Node :: getPos() {return pos;}
@@ -57,5 +62,7 @@ void Node :: setVel(Vector v) {vel = v;}
 double Node :: getRadius() {return radius;}
 double Node :: getMu() {return mu;}
 double Node :: getMass() {return mass;}
+int Node :: getId() {return id;}
+void Node :: setId(int _id) {id = _id;}
 
 

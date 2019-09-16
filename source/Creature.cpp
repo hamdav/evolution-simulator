@@ -15,17 +15,18 @@ Creature :: Creature ()
     //The number of muscles must be at least one more than the number of nodes. 
     //The number of muscles cannot be more than n*(n-1)/2 as there would then be more than one muscle per pair of nodes. 
     int number_of_nodes = myRandInt(MIN_NO_NODES,MAX_NO_NODES);
-    cout << number_of_nodes << endl;
+    //cout << number_of_nodes << endl;
     
     int number_of_muscles = myRandInt(number_of_nodes, number_of_nodes*(number_of_nodes-1)/2+1);
-    cout << number_of_muscles << endl;
+    //cout << number_of_muscles << endl;
 
     // Create nodes 
     // connections is a map of ints that keeps track of the other nodes that the node is connected to. 
     for (int i = 0; i < number_of_nodes; i++)
     {
         Node n = Node();
-        nodes.push_back(n);
+        n.setId(i);
+        nodes[i] = n;
         connections[i] = list<int>();
     }
 
@@ -82,17 +83,6 @@ void Creature :: setInitialPos()
     }
 }
 
-/*
-Creature :: Creature (list<Muscle> _muscles)
-{
-    muscles = _muscles;
-    for (Muscle const &muscle : muscles)
-    {
-        nodes.insert(muscle.node1);
-        nodes.insert(muscle.node2);
-    }
-}
-*/
 
 void Creature :: updateInternalForces(double t)
 {
@@ -103,15 +93,46 @@ void Creature :: updateInternalForces(double t)
 }
 Creature Creature :: offspring()
 {
-    //TODO small chance of changing architechture
+
+    Creature new_creature = *this;
+    // Make nodes map empty to accomodate the new nodes. 
+    new_creature.nodes.clear();
+    // Same with muscles
+    // We may have a problem as the Muscles may be destroyed... will look into this later. 
+    new_creature.muscles.clear();
+    
+
+    for (Muscle m : muscles)
+    {
+        Node node1 = m.getNode1();
+        node1.mutateInPlace();
+        int n1id = node1.getId();
+
+        Node node2 = m.getNode2();
+        node2.mutateInPlace();
+        int n2id = node2.getId();
+
+        if ( new_creature.nodes.find(n1id) == new_creature.nodes.end() )
+            new_creature.nodes[n1id] = node1;
+        if ( new_creature.nodes.find(n2id) == new_creature.nodes.end() )
+            new_creature.nodes[n2id] = node2;
+
+        Muscle new_m = Muscle(new_creature.nodes[n1id], new_creature.nodes[n2id], m);
+        new_m.mutateInPlace();
+        new_creature.muscles.push_back(new_m);
+    }
+    new_creature.connections = connections;
+
     //TODO Change some shit and return a new creature. 
-    return *this;
+    return new_creature;
 }
+
 Vector Creature :: getAvgPos()
 {
     Vector cum_pos = Vector(0,0);
-    for (Node n : nodes)
+    for (auto id_node_pair : nodes)
     {
+        Node n = id_node_pair.second;
         cum_pos = cum_pos.add(n.getPos());
     }
     Vector avg_pos = cum_pos.mul(1.0/nodes.size());
@@ -120,6 +141,19 @@ Vector Creature :: getAvgPos()
 
 void Creature :: setScore(double s) { score = s; }
 double Creature :: getScore () {return score;}
+
+void Creature :: printCreature()
+{
+    for (auto id_node_pair : nodes)
+    {
+        id_node_pair.second.printNode();
+    }
+    std::cout << std::endl;
+    for (Muscle m : muscles)
+    {
+        m.printMuscle();
+    }
+}
 
 
     

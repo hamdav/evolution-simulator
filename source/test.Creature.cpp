@@ -1,5 +1,5 @@
 #include "Creature.h"
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #include <cmath> // for atan
 #include <iostream>
 #include <ctime>
@@ -10,20 +10,28 @@ int main()
 {
     int seed = time(NULL);
     srand(seed);
-    sf::RenderWindow window(sf::VideoMode(200,200),"Eve",sf::Style::Resize);
-    window.setFramerateLimit(1000);
+    //sf::RenderWindow window(sf::VideoMode(200,200),"Eve",sf::Style::Resize);
+    //window.setFramerateLimit(1000);
 
-    Creature bob = Creature();
+    std::cout << " Karl: " << std::endl;
+    Creature karl = Creature();
+    karl.printCreature();
 
-    int i = 0;
-    for (Node& node : bob.nodes)
-    {
-        node.setPos(Vector(100*i,100*std::min(i,1)));
-        i++;
-    }
+    std::cout << std::endl;
+    std::cout << " Bob: " << std::endl;
+    Creature bob = karl.offspring();
+    bob.printCreature();
+
+    std::cout << std::endl;
+    std::cout << " Karl: " << std::endl;
+    karl.printCreature();
+
+
+    bob.setInitialPos();
 
     double time = 0;
     double dt = 0.001;
+    /*
     while (window.isOpen())
     {
         // Handle events
@@ -90,5 +98,6 @@ int main()
 
         window.display();
     }
+    */
     return 0;
 }

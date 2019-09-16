@@ -24,6 +24,10 @@ class Node
         double getRadius();
         double getMu();
         double getMass();
+        int getId();
+        void setId(int);
+        void printNode();
+
 
     private:
         Vector pos;
@@ -34,13 +38,14 @@ class Node
         double mass;
         double mu;
         double radius = 20;
+        int id;
 
-        const double MIN_MASS = 1; 
-        const double MAX_MASS = 1; 
-        const double MIN_MU = 0;
-        const double MAX_MU = 1;
-        const double MIN_RADIUS = 3;
-        const double MAX_RADIUS = 3;
+        double MIN_MASS = 1; 
+        double MAX_MASS = 1; 
+        double MIN_MU = 0;
+        double MAX_MU = 1;
+        double MIN_RADIUS = 3;
+        double MAX_RADIUS = 3;
 
 };
 

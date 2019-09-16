@@ -19,15 +19,15 @@ Muscle :: Muscle(Node& n1, Node& n2) : node1(n1), node2(n2)
     c = myRand(MIN_C, MAX_C);
     
 }
-Muscle :: Muscle(Node& n1, Node& n2, double _period = 1, double _fraction_contracted = 0.5, double _contracted_length = 1, double _extended_length = 2, double _phase_shift = 0, double _k = 1, double _c = 10) : node1(n1), node2(n2)
+Muscle :: Muscle(Node& n1, Node& n2, Muscle m) : node1(n1), node2(n2)
 {
-    period = _period;
-    fraction_contracted = _fraction_contracted;
-    contracted_length = _contracted_length;
-    extended_length = _extended_length;
-    phase_shift = _phase_shift;
-    k = _k;
-    c = _c;
+    period = m.period;
+    fraction_contracted = m.fraction_contracted;
+    contracted_length = m.contracted_length;
+    extended_length = m.extended_length;
+    phase_shift = m.phase_shift;
+    k = m.k;
+    c = m.c;
 }
 
 bool Muscle :: isContracted(double t)
@@ -80,9 +80,13 @@ void Muscle :: mutateInPlace()
     contracted_length = mutate(MIN_LEN_CON,MAX_LEN_CON,contracted_length);
     extended_length = mutate(MIN_LEN_EXT,MAX_LEN_EXT,extended_length);
     phase_shift = mutate(MIN_PHASE_SHIFT,MAX_PHASE_SHIFT,phase_shift);
-    k = 1;
-    c = 1;
-    //_k = mutate(1,1,k);
-    //_c = mutate(1,1,c);
-    //return Muscle(node1, node2, period = _period , fraction_contracted = _fraction_contracted , contracted_length = _contracted_length , extended_length = _extended_length , phase_shift = _phase_shift , k = _k , c = _c );
+    k = mutate(MIN_K, MAX_K, k);
+    c = mutate(MIN_C, MAX_C, c);
+}
+Node& Muscle :: getNode1() {return node1;}
+Node& Muscle :: getNode2() {return node2;}
+void Muscle :: printMuscle()
+{
+    std::cout << "Muscle Connectine Node " << node1.getId() << " and Node " << node2.getId() << std::endl;
+    std::cout << "Period: " << period <<" Fraction contracted: " << fraction_contracted << " Ext: " << extended_length << " Con: " << contracted_length << " Phase: " << phase_shift << " k: " << k << " c: " << c << std::endl;
 }
