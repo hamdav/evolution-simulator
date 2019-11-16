@@ -6,6 +6,8 @@
 #include <vector>
 #include <map>
 
+extern int MAX_NO_NODES;
+extern int MIN_NO_NODES;
 
 class Creature
 {
@@ -22,8 +24,6 @@ class Creature
         void setInitialPos();
         void printCreature();
     private:
-        int MAX_NO_NODES = 8;
-        int MIN_NO_NODES = 4;
         double score;
 };
 
