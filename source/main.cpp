@@ -19,7 +19,7 @@ int main ()
     resetScreen();
 
     // Iitialize the list of creatures
-    std::list<Creature> population;
+    std::vector<Creature> population;
 
     generateCreaturesMenu(population);
 

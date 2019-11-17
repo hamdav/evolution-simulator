@@ -1,6 +1,6 @@
-#include <list>
+#include <vector>
 #include "Creature.h"
 
 extern int POPULATION_SIZE;
 
-void runGeneration(std::list<Creature>&);
+void runGeneration(std::vector<Creature>&);

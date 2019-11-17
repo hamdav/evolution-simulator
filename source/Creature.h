@@ -13,6 +13,7 @@ class Creature
 {
     public:
         Creature(); // Random creature
+        Creature(const Creature&); // Copy constructor
         void updateInternalForces(double t);
         Creature offspring();
         Vector getAvgPos();

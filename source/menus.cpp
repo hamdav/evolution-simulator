@@ -16,7 +16,7 @@ int currentGeneration = 0;
 
 void resetScreen ()
 {
-    system("clear");
+    //system("clear");
 
     std::cout << "\n\n";
     std::cout << h1 << " - - - Evolution Simulator - - - " << backToNormal << std::endl;
@@ -48,7 +48,7 @@ int menu (int n_args, std::string* options)
         return rv;
     }
 }
-void generateCreaturesMenu (std::list<Creature> &population)
+void generateCreaturesMenu (std::vector<Creature> &population)
 {
     resetScreen();
     std::cout << h2 << " - - Main Menu - - " << backToNormal << std::endl;
@@ -71,7 +71,7 @@ void generateCreaturesMenu (std::list<Creature> &population)
     return;
 }
 
-void settingsMenu (std::list<Creature> &population)
+void settingsMenu (std::vector<Creature> &population)
 {
     resetScreen();
     std::cout << h2 << "Edit settings" << backToNormal << std::endl;
@@ -109,7 +109,7 @@ void settingsMenu (std::list<Creature> &population)
     return;
 }
 
-void simulationsMenu (std::list<Creature> &population)
+void simulationsMenu (std::vector<Creature> &population)
 {
     resetScreen();
 
@@ -118,7 +118,7 @@ void simulationsMenu (std::list<Creature> &population)
 
     if (currentGeneration > 0)
     {
-        std::list<Creature>::iterator it = population.begin();
+        std::vector<Creature>::iterator it = population.begin();
 
         std::cout << "The maximum score of the population is " << it->getScore() << std::endl;
         std::advance(it, POPULATION_SIZE/2);
@@ -144,7 +144,7 @@ void simulationsMenu (std::list<Creature> &population)
             resetScreen();
             currentGeneration++;
 
-            std::list<Creature>::iterator it = population.begin();
+            std::vector<Creature>::iterator it = population.begin();
             std::cout << "The maximum score of the population is " << it->getScore() << std::endl;
             std::advance(it, POPULATION_SIZE/2);
             std::cout << "The mean score of the population is "<< it->getScore() << std::endl;
@@ -174,7 +174,7 @@ void simulationsMenu (std::list<Creature> &population)
             break;
         }
 
-        std::list<Creature>::iterator it = population.begin();
+        std::vector<Creature>::iterator it = population.begin();
         std::advance(it, creatureId);
 
         int speed = 1;

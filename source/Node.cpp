@@ -18,6 +18,15 @@ Node :: Node (double _m, double _mu) : mass(_m), mu(_mu)
     acc = Vector(0,0);
     force = Vector(0,0);
 }
+Node :: Node (const Node& n)
+{
+    mass = n.getMass();
+    mu = n.getMu();
+    vel = Vector(0,0);
+    acc = Vector(0,0);
+    force = Vector(0,0);
+}
+
 void Node :: mutateInPlace()
 {
     mass = mutate(MIN_MASS,MAX_MASS,mass);

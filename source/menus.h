@@ -10,6 +10,6 @@ extern int MIN_NO_NODES;
 
 void resetScreen();
 int menu(int, std::string*);
-void generateCreaturesMenu (std::list<Creature>&);
-void settingsMenu (std::list<Creature>&);
-void simulationsMenu(std::list<Creature>&);
+void generateCreaturesMenu (std::vector<Creature>&);
+void settingsMenu (std::vector<Creature>&);
+void simulationsMenu(std::vector<Creature>&);

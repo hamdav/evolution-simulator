@@ -73,6 +73,35 @@ Creature :: Creature ()
     
     */
 }
+Creature :: Creature (const Creature &c)
+{
+
+    for (const Muscle& m : c.muscles)
+    {
+        Node node1(m.getNode1());
+        int n1id = m.getNode1().getId();
+        node1.setId(n1id);
+
+        Node node2(m.getNode2());
+        int n2id = m.getNode2().getId();
+        node2.setId(n2id);
+
+        if ( nodes.find(n1id) == nodes.end() )
+            nodes[n1id] = node1;
+        if ( nodes.find(n2id) == nodes.end() )
+            nodes[n2id] = node2;
+
+        Muscle new_m = Muscle(nodes[n1id], nodes[n2id], m);
+        muscles.push_back(new_m);
+    }
+    connections = c.connections;
+
+    std::cout << "COPY CONSTRUCTOR WAS CALLED";
+}
+
+
+
+
 void Creature :: setInitialPos()
 {
     for (int i = 0;i < nodes.size(); i++)
@@ -94,7 +123,7 @@ void Creature :: updateInternalForces(double t)
 Creature Creature :: offspring()
 {
 
-    Creature new_creature = *this;
+    Creature new_creature = Creature();
     // Make nodes map empty to accomodate the new nodes. 
     new_creature.nodes.clear();
     // Same with muscles
@@ -102,6 +131,7 @@ Creature Creature :: offspring()
     new_creature.muscles.clear();
     
 
+    std::cout << muscles.size();
     for (Muscle m : muscles)
     {
         Node node1 = m.getNode1();

@@ -9,7 +9,7 @@ double mutate(double low_bound, double high_bound, double value)
     if (value < low_bound || value > high_bound)
     {
         std::cout << "Value,low,high:" << value << ",  " << low_bound << ",  " << high_bound << std::endl;
-        //throw std::invalid_argument("value not within bounds");
+        throw std::invalid_argument("value not within bounds");
     }
     //Random number between MF LOWER BOUND and MF UPPER BOUND
     double mutationfactor = (rand() % ((int)((MUTATION_FACTOR_UPPER_BOUND - MUTATION_FACTOR_LOWER_BOUND) *1000)))/1000.0 + MUTATION_FACTOR_LOWER_BOUND;
