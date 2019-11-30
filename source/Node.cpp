@@ -20,17 +20,21 @@ Node :: Node (double _m, double _mu) : mass(_m), mu(_mu)
 }
 Node :: Node (const Node& n)
 {
-    mass = n.getMass();
-    mu = n.getMu();
-    vel = Vector(0,0);
-    acc = Vector(0,0);
-    force = Vector(0,0);
+    mass = n.mass;
+    mu = n.mu;
+    pos = n.pos;
+    prev_pos = n.prev_pos;
+    vel = n.vel;
+    acc = n.acc;
+    force = n.force;
 }
 
 void Node :: mutateInPlace()
 {
-    mass = mutate(MIN_MASS,MAX_MASS,mass);
-    mu = mutate(MIN_MU,MAX_MU,mu);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        mass = mutate(MIN_MASS,MAX_MASS,mass);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        mu = mutate(MIN_MU,MAX_MU,mu);
 }
 void Node :: addForce(Vector f) { force = force.add(f); }
 

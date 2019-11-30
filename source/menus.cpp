@@ -23,6 +23,20 @@ void resetScreen ()
     std::cout << std::endl;
 }
 
+void printPopulation(std::vector<Creature>& population)
+{
+    int i = 0;
+    for (Creature& c : population)
+    {
+        printf("| id: %3d kind: %d%-2d score: % 6.2f | ", i, c.nodes.size(),  c.muscles.size(), c.getScore());
+        if (i% 4 == 3)
+            std::cout << std::endl;
+        i++;
+    }
+    std::cout << "Press enter key to go back to menu" << std::endl;
+    std::cin.get();
+}
+
 int menu (int n_args, std::string* options)
 {
 
@@ -62,6 +76,12 @@ void generateCreaturesMenu (std::vector<Creature> &population)
         // Create initial creatures
         for (int i = 0; i < POPULATION_SIZE; i++) {
             population.push_back(Creature());
+        }
+
+        //Test them, each creature is in singleSimulations given a score (accessed by creature.getScore())
+        for (Creature& c : population){
+            // Sets creature score to the appropriate value
+            singleSimulation(c, false, 1);
         }
     }
     else if (choice==1)
@@ -116,17 +136,26 @@ void simulationsMenu (std::vector<Creature> &population)
     std::cout << h2 << " - - Main Menu - - " << backToNormal << std::endl;
     std::cout << "The current generation is " << currentGeneration << std::endl;
 
-    if (currentGeneration > 0)
+    double total_score = 0;
+    double max_score = -1;
+    Creature best_creature;
+    for (Creature& c : population)
     {
-        std::vector<Creature>::iterator it = population.begin();
-
-        std::cout << "The maximum score of the population is " << it->getScore() << std::endl;
-        std::advance(it, POPULATION_SIZE/2);
-        std::cout << "The mean score of the population is "<< it->getScore() << std::endl;
+        total_score += c.getScore();
+        if (c.getScore() > max_score)
+        {
+            max_score = c.getScore();
+            best_creature = c;
+        }
     }
+    double mean_score = total_score/POPULATION_SIZE;
 
-    std::string options[3] = {"Run a single generation", "Run n generations", "View a single simulation"};
-    int choice = menu(3,options);
+
+    std::cout << "The maximum score of the population is " << max_score << std::endl;
+    std::cout << "The mean score of the population is "<< mean_score << std::endl;
+
+    std::string options[4] = {"Run a single generation", "Run n generations", "View a single simulation", "View Population"};
+    int choice = menu(4,options);
 
     if (choice==0)
     {
@@ -144,10 +173,19 @@ void simulationsMenu (std::vector<Creature> &population)
             resetScreen();
             currentGeneration++;
 
-            std::vector<Creature>::iterator it = population.begin();
-            std::cout << "The maximum score of the population is " << it->getScore() << std::endl;
-            std::advance(it, POPULATION_SIZE/2);
-            std::cout << "The mean score of the population is "<< it->getScore() << std::endl;
+            double total_score = 0;
+            double max_score = -1;
+            for (Creature& c : population)
+            {
+                total_score += c.getScore();
+                if (c.getScore() > max_score)
+                    max_score = c.getScore();
+            }
+            double mean_score = total_score/POPULATION_SIZE;
+
+
+            std::cout << "The maximum score of the population is " << max_score << std::endl;
+            std::cout << "The mean score of the population is "<< mean_score << std::endl;
 
             std::cout << "Running generation " << i+1 << " out of " << numberOfGenerations << "..." << std::endl;
             runGeneration(population);
@@ -158,14 +196,14 @@ void simulationsMenu (std::vector<Creature> &population)
     {
         int creatureId = POPULATION_SIZE + 1;
         std::cout << "Which creature would you like to see? " << std::endl;
-        std::cout << "Must be number between 0 and " << POPULATION_SIZE-1 << std::endl;
+        std::cout << "Must be number between 0 and " << POPULATION_SIZE-1 << " or -1 for best creature" << std::endl;
         
         while (true)
         {
             std::cout << "\n:";
             std::cin >> creatureId;
 
-            if (std::cin.fail() || creatureId >= POPULATION_SIZE) { 
+            if (std::cin.fail() || creatureId >= POPULATION_SIZE || creatureId < -1) { 
                 std::cout << "Invalid option, try again...\n";
                 std::cin.clear();
                 std::cin.ignore(100,'\n');
@@ -174,12 +212,23 @@ void simulationsMenu (std::vector<Creature> &population)
             break;
         }
 
+        if (creatureId == -1)
+        {
+            int speed = 1;
+            singleSimulation(best_creature,true,speed);
+            return;
+        }
+
         std::vector<Creature>::iterator it = population.begin();
         std::advance(it, creatureId);
 
         int speed = 1;
         singleSimulation(*it, true, speed);
         std::cout << "Creature was scored: " << it->getScore() << std::endl;
+    }
+    else if (choice==3)
+    {
+        printPopulation(population);
     }
 
     return;

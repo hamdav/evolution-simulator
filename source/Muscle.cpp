@@ -7,9 +7,8 @@
 #include <iostream>
 
 
-Muscle :: Muscle(Node& n1, Node& n2) : node1(n1), node2(n2)
+Muscle :: Muscle()
 {
-    
     period = myRand(MIN_PERIOD,MAX_PERIOD);
     fraction_contracted = myRand(MIN_FRAC_CON,MAX_FRAC_CON);
     contracted_length = myRand(MIN_LEN_CON,MAX_LEN_CON);
@@ -19,7 +18,7 @@ Muscle :: Muscle(Node& n1, Node& n2) : node1(n1), node2(n2)
     c = myRand(MIN_C, MAX_C);
     
 }
-Muscle :: Muscle(Node& n1, Node& n2, Muscle m) : node1(n1), node2(n2)
+Muscle :: Muscle(const Muscle& m)
 {
     period = m.period;
     fraction_contracted = m.fraction_contracted;
@@ -29,7 +28,23 @@ Muscle :: Muscle(Node& n1, Node& n2, Muscle m) : node1(n1), node2(n2)
     k = m.k;
     c = m.c;
 }
-
+void Muscle :: mutateInPlace()
+{
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        period = mutate(MIN_PERIOD,MAX_PERIOD,period);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        fraction_contracted = mutate(MIN_FRAC_CON,MAX_FRAC_CON,fraction_contracted);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        contracted_length = mutate(MIN_LEN_CON,MAX_LEN_CON,contracted_length);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        extended_length = mutate(MIN_LEN_EXT,MAX_LEN_EXT,extended_length);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        phase_shift = mutate(MIN_PHASE_SHIFT,MAX_PHASE_SHIFT,phase_shift);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        k = mutate(MIN_K, MAX_K, k);
+    if (myRand(0,1,3) < SINGLE_GENE_MUTATION_PROB)
+        c = mutate(MIN_C, MAX_C, c);
+}
 bool Muscle :: isContracted(double t)
 {
     double internal_t = fmod(t, period);
@@ -39,7 +54,7 @@ bool Muscle :: isContracted(double t)
     return phase <= fraction_contracted;
 }
 
-Vector Muscle :: forceOnNode1(bool is_contracted)
+Vector Muscle :: forceOnNode1(Node& node1, Node& node2, bool is_contracted)
 {
     // Positionvector from 1 to 2
     Vector relativePos = node2.getPos().sub(node1.getPos());
@@ -62,10 +77,10 @@ Vector Muscle :: forceOnNode1(bool is_contracted)
 }
 
 
-void Muscle :: addForceToNodes(double t)
+void Muscle :: addForceToNodes(Node& node1, Node& node2, double t)
 {
     bool contracted = isContracted(t);
-    Vector force_on_1 = forceOnNode1(contracted);
+    Vector force_on_1 = forceOnNode1(node1 ,node2, contracted);
 
     node1.addForce(force_on_1);
 
@@ -73,20 +88,7 @@ void Muscle :: addForceToNodes(double t)
     Vector force_on_2 = force_on_1.mul(-1);
     node2.addForce(force_on_2);
 }
-void Muscle :: mutateInPlace()
-{
-    period = mutate(MIN_PERIOD,MAX_PERIOD,period);
-    fraction_contracted = mutate(MIN_FRAC_CON,MAX_FRAC_CON,fraction_contracted);
-    contracted_length = mutate(MIN_LEN_CON,MAX_LEN_CON,contracted_length);
-    extended_length = mutate(MIN_LEN_EXT,MAX_LEN_EXT,extended_length);
-    phase_shift = mutate(MIN_PHASE_SHIFT,MAX_PHASE_SHIFT,phase_shift);
-    k = mutate(MIN_K, MAX_K, k);
-    c = mutate(MIN_C, MAX_C, c);
-}
-Node& Muscle :: getNode1() {return node1;}
-Node& Muscle :: getNode2() {return node2;}
 void Muscle :: printMuscle()
 {
-    std::cout << "Muscle Connectine Node " << node1.getId() << " and Node " << node2.getId() << std::endl;
     std::cout << "Period: " << period <<" Fraction contracted: " << fraction_contracted << " Ext: " << extended_length << " Con: " << contracted_length << " Phase: " << phase_shift << " k: " << k << " c: " << c << std::endl;
 }

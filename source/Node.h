@@ -2,11 +2,14 @@
 
 #include "Vector.h"
 
+extern double SINGLE_GENE_MUTATION_PROB;
+
 class Node
 {
     public:
         Node();
         Node(double, double);
+        Node(const Node&);
         //Node child();
         void mutateInPlace();
         void addForce(Vector);

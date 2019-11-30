@@ -59,9 +59,13 @@ std::string toString(int i)
     return out_string;
 }
 
-void updatePhysics(Creature& ann, double time, double dt)
+bool updatePhysics(Creature& ann, double time, double dt)
 {
+    // If all nodes are on the ground at the same time, this returns false, and the simulation should be stopped. 
     ann.updateInternalForces(time);
+
+    bool all_nodes_on_ground = true;
+
     for (auto& id_node_pair : ann.nodes)
     {
         Node& node = id_node_pair.second;
@@ -72,6 +76,7 @@ void updatePhysics(Creature& ann, double time, double dt)
 
         node.updateAcc();
         node.updateVel(dt);
+
         if (nodeTouchesGround(node))
         {
             //If the node touches the ground, set velocity and acceleration to 0 if they are accelerating/velocitating down. Else leave them be. (the node should not travel into the ground).
@@ -79,10 +84,14 @@ void updatePhysics(Creature& ann, double time, double dt)
             node.addForce(Vector(0,std::max(0.0,-1*node.getForce().y)));
             node.setPos(Vector(node.getPos().x, 0 + node.getRadius()));
         }
+        else
+            all_nodes_on_ground = false;
 
         node.updatePos(dt);
         node.zeroForce();
     }
+
+    return all_nodes_on_ground;
 }
 
     
@@ -97,8 +106,10 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
     {
         while (time < TIME_LIMIT)
         {
-            updatePhysics(bob, time, dt);
+            bool all_nodes_on_ground = updatePhysics(bob, time, dt);
             time += dt;
+            if (all_nodes_on_ground)
+                break;
         }
         bob.setScore(bob.getAvgPos().x);
         return;
@@ -126,8 +137,10 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
             // Physics
             for (int i = 0; i <= playback_speed; i++)
             {
-                updatePhysics(bob, time, dt);
+                bool all_nodes_on_ground = updatePhysics(bob, time, dt);
                 time += dt;
+                if (all_nodes_on_ground)
+                    time = TIME_LIMIT;
             }
 
 
@@ -233,33 +246,33 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
             score.setPosition(score_pos.x, score_pos.y);
             window.draw(score);
 
-            //Draw muscles
-            for (int n1 = 0; n1 < bob.nodes.size(); n1++)
+            //Draw muscles 
+            for (auto it = bob.muscles.begin(); it != bob.muscles.end(); ++it)
             {
-                for (int n2 : bob.connections[n1])
-                {
-                    Vector p1 = bob.nodes[n1].getPos();
-                    Vector p2 = bob.nodes[n2].getPos();
-                    Vector diff = p2.sub(p1); // from p1 to p2
-                    Vector p12 = p1.add(diff.mul(0.5)); // Point in between p1 and p2
+                int n1 = it->first.first;
+                int n2 = it->first.second;
 
-                    double muscle_length = diff.length()*MAGNIFICATION_FACTOR;
-                    double muscle_width = 12;
-                    double angle = atan(-diff.y/diff.x) * 180 / PI ;
-                    //Create the rectangle
-                    sf::RectangleShape muscle(sf::Vector2f(muscle_length, muscle_width));
-                    // Set the origin of the rectangle to the center
-                    muscle.setOrigin(muscle_length/2, muscle_width/2);
-                    // Move the center of the rectangle in the middle of the two nodes
-                    Vector drawp12 = toDrawCoord(p12,bob.getAvgPos());
-                    muscle.setPosition(drawp12.x, drawp12.y);
-                    //Rotate the rectangle to fit
-                    muscle.setRotation(angle);
-                    //Make it a pretty color
-                    muscle.setFillColor(sf::Color(200, 100, 0));
-                    // Draw it to the screen
-                    window.draw(muscle);
-                }
+                Vector p1 = bob.nodes[n1].getPos();
+                Vector p2 = bob.nodes[n2].getPos();
+                Vector diff = p2.sub(p1); // from p1 to p2
+                Vector p12 = p1.add(diff.mul(0.5)); // Point in between p1 and p2
+
+                double muscle_length = diff.length()*MAGNIFICATION_FACTOR;
+                double muscle_width = 12;
+                double angle = atan(-diff.y/diff.x) * 180 / PI ;
+                //Create the rectangle
+                sf::RectangleShape muscle(sf::Vector2f(muscle_length, muscle_width));
+                // Set the origin of the rectangle to the center
+                muscle.setOrigin(muscle_length/2, muscle_width/2);
+                // Move the center of the rectangle in the middle of the two nodes
+                Vector drawp12 = toDrawCoord(p12,bob.getAvgPos());
+                muscle.setPosition(drawp12.x, drawp12.y);
+                //Rotate the rectangle to fit
+                muscle.setRotation(angle);
+                //Make it a pretty color
+                muscle.setFillColor(sf::Color(200, 100, 0));
+                // Draw it to the screen
+                window.draw(muscle);
             }
             // Draw nodes
             for (int i = 0; i < bob.nodes.size(); i++)
@@ -276,7 +289,7 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
 
             window.display();
 
-            if (time >= 20)
+            if (time >= TIME_LIMIT)
             {
                 bob.setScore(bob.getAvgPos().x);
                 return;

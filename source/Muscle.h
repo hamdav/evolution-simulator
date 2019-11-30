@@ -3,24 +3,21 @@
 #include "Vector.h"
 #include "Node.h"
 
+extern double SINGLE_GENE_MUTATION_PROB;
 class Muscle
 {
     public:
         //Muscle(Node &n1, Node &n2, double period = 1, double fraction_contracted = 0.5, double contracted_length = 1, double extended_length = 2, double phase_shift = 0, double k = 1, double c = 1);
-        Muscle(Node&, Node&);
-        Muscle(Node&, Node&, Muscle);
-        void addForceToNodes(double t);
+        Muscle();
+        Muscle(const Muscle&);
+        void addForceToNodes(Node&, Node&, double);
         void mutateInPlace();
-        Node& getNode1();
-        Node& getNode2();
         void printMuscle();
 
     private:
-        Vector forceOnNode1(bool is_contracted);
-        bool isContracted(double t);
+        Vector forceOnNode1(Node&, Node&, bool);
+        bool isContracted(double);
 
-        Node& node1;
-        Node& node2;
         //Total period of motion, not less than one second
         double period; 
         // fraction of the period that the muscle is contracted

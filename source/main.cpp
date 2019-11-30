@@ -11,6 +11,7 @@ int POPULATION_SIZE = 100;
 int NUMBER_OF_GENERATIONS = 100;
 int MAX_NO_NODES = 8;
 int MIN_NO_NODES = 4;
+double SINGLE_GENE_MUTATION_PROB = 0.1;
 
 int main ()
 {
