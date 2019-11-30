@@ -6,8 +6,9 @@
 #define bold "\033[1m"
 #define underline "\033[4m"
 #define inverse "\033[7m"
-#define red "\033[34m"
+#define red "\033[31m"
 #define yellow "\033[33m"
+#define green "\033[32m"
 
 #define h1 "\033[4;1;7;34m"
 #define h2 "\033[4;1;33m"
@@ -16,24 +17,34 @@ int currentGeneration = 0;
 
 void resetScreen ()
 {
-    //system("clear");
+    system("clear");
 
     std::cout << "\n\n";
     std::cout << h1 << " - - - Evolution Simulator - - - " << backToNormal << std::endl;
     std::cout << std::endl;
 }
 
-void printPopulation(std::vector<Creature>& population)
+void printPopulation(std::vector<Creature>& population, double mean_score, double max_score)
 {
     int i = 0;
     for (Creature& c : population)
     {
+        if (c.getScore() >= mean_score)
+            std::cout << green;
+        else if (c.getScore() <= mean_score)
+            std::cout << red;
+        if (c.getScore() == max_score)
+            std::cout << bold;
         printf("| id: %3d kind: %d%-2d score: % 6.2f | ", i, c.nodes.size(),  c.muscles.size(), c.getScore());
+        std::cout << backToNormal;
         if (i% 4 == 3)
             std::cout << std::endl;
         i++;
     }
-    std::cout << "Press enter key to go back to menu" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Press enter key to go back to menu";
+    std::cin.clear();
+    std::cin.ignore(100,'\n');
     std::cin.get();
 }
 
@@ -228,7 +239,7 @@ void simulationsMenu (std::vector<Creature> &population)
     }
     else if (choice==3)
     {
-        printPopulation(population);
+        printPopulation(population, mean_score, max_score);
     }
 
     return;
