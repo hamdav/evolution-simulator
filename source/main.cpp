@@ -24,10 +24,7 @@ int main ()
 
     generateCreaturesMenu(population);
 
-    while (true)
-    {
-        simulationsMenu(population);
-    }
+    simulationsMenu(population);
 
     //bigSimulation();
     return 0;

@@ -117,7 +117,7 @@ void singleSimulation(Creature& bob, bool graphical, int playback_speed)
     else
     {
         sf::Font font;
-        if (!font.loadFromFile("../resources/dealerplate california.ttf")){
+        if (!font.loadFromFile("./resources/dealerplate california.ttf")){
             throw std::logic_error("font not found");
         }
 
